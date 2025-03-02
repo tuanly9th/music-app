@@ -38,11 +38,50 @@ Install the necessary libraries:
 4. Display song metadata (title, artist, album art).
 
 ## Step 5: Manage Playlists
-1. Create a database using SQLite.
-2. Implement functions to:
-   - Create a playlist.
-   - Add/remove songs from a playlist.
-   - Retrieve and display playlists.
+### 5.1. Install SQLite Dependency
+- Install `react-native-sqlite-storage` to handle local storage:  
+  ```bash
+  npm install react-native-sqlite-storage
+  ```
+
+### 5.2. Set Up Database Connection
+- Create a database file and initialize a connection:
+  - Open or create a SQLite database.
+  - Define a function to establish a database connection.
+
+### 5.3. Create Playlist Table
+- Define a schema for storing playlists:
+  ```sql
+  CREATE TABLE IF NOT EXISTS playlists (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL
+  );
+  ```
+
+### 5.4. Create Songs Table
+- Define a schema for storing songs and their relation to playlists:
+  ```sql
+  CREATE TABLE IF NOT EXISTS songs (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      artist TEXT,
+      filePath TEXT NOT NULL,
+      playlist_id INTEGER,
+      FOREIGN KEY (playlist_id) REFERENCES playlists(id)
+  );
+  ```
+
+### 5.5. Implement CRUD Operations
+- **Create a playlist:** Insert a new playlist into the database.
+- **Retrieve playlists:** Fetch all playlists.
+- **Add a song to a playlist:** Insert song metadata with a reference to a playlist.
+- **Remove a song from a playlist:** Delete an entry from the `songs` table.
+- **Delete a playlist:** Remove a playlist and its associated songs.
+
+### 5.6. Integrate with React Native UI
+- Display playlists in the UI.
+- Allow users to select and add songs to playlists.
+- Implement a button for creating and deleting playlists.
 
 ## Step 6: Enable File Downloads
 1. Use `react-native-fs` to manage file storage.
